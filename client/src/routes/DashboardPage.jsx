@@ -1,4 +1,4 @@
-import Mainfeed from '../components/Mainfeed';
+import { Outlet } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 
 const DashboardPage = () => {
@@ -8,7 +8,7 @@ const DashboardPage = () => {
             <Navbar />
          </nav>
          <main className='flex-1 mt-[60px] bg-gray-200 overflow-auto'>
-            <Mainfeed />
+            <Outlet />
          </main>
       </div>
    )
