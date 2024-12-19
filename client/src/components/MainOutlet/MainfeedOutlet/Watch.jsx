@@ -2,7 +2,7 @@
 
 const Watch = () => {
   return (
-    <div>Watch</div>
+    <div>Videos</div>
   )
 }
 
