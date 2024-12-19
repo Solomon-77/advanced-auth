@@ -1,4 +1,6 @@
 import { Link, Outlet, useLocation } from "react-router-dom"
+import SideNav from "./MainfeedComponents/SideNav";
+import Friends from "./MainfeedComponents/Friends";
 
 const Mainfeed = () => {
    const location = useLocation();
@@ -11,7 +13,7 @@ const Mainfeed = () => {
 
    return (
       <div className="max-w-[1200px] mx-auto p-6 grid grid-cols-[250px_1fr_250px] gap-6">
-         <div className="">sidenav</div>
+         <SideNav />
          <div className="flex flex-col text-center gap-6 font-medium text-sm">
             <div className="flex gap-6">
                <Link to="/" className={`${isActive("/")}`}>Home</Link>
@@ -20,7 +22,7 @@ const Mainfeed = () => {
             </div>
             <Outlet />
          </div>
-         <div className="">zxc</div>
+         <Friends />
       </div>
    )
 }
