@@ -7,14 +7,14 @@ const Mainfeed = () => {
 
    const isActive = (path) => {
       return location.pathname === path
-         ? "bg-white w-full py-2 rounded-md text-black shadow-sm"
-         : "w-full py-2 rounded-sm text-neutral-500";
+         ? "bg-white w-full py-2 rounded-md text-black shadow-sm text-center text-sm font-medium"
+         : "w-full py-2 rounded-sm text-neutral-500 text-center text-sm font-medium";
    };
-
+   
    return (
       <div className="max-w-[1200px] mx-auto p-6 grid grid-cols-[250px_1fr_250px] gap-6">
          <SideNav />
-         <div className="flex flex-col text-center gap-6 font-medium text-sm">
+         <div className="flex flex-col gap-6">
             <div className="flex gap-6">
                <Link to="/" className={`${isActive("/")}`}>Home</Link>
                <Link to="/watch" className={`${isActive("/watch")}`}>Watch</Link>
