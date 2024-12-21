@@ -1,5 +1,6 @@
 import { Bell, MessageCircle, User, House } from 'lucide-react';
 import { CiSearch } from "react-icons/ci";
+import { Link } from "react-router-dom"
 
 const Navbar = () => {
 	return (
@@ -16,9 +17,9 @@ const Navbar = () => {
 				</div>
 			</div>
 			<div className="flex gap-4 items-center">
-				<div className='p-2 hover:bg-gray-100 rounded-md cursor-pointer'>
+				<Link to='/' className='p-2 hover:bg-gray-100 rounded-md cursor-pointer'>
 					<House className='w-5 h-5' />
-				</div>
+				</Link>
 				<div className='p-2 hover:bg-gray-100 rounded-md cursor-pointer'>
 					<MessageCircle className='w-5 h-5' />
 				</div>
