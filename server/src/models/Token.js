@@ -22,6 +22,8 @@ const tokenSchema = new mongoose.Schema({
       default: Date.now,
       expires: 3600 // Token expires in 1 hour
    }
+}, {
+   versionKey: false
 });
 
 module.exports = mongoose.model('Token', tokenSchema);

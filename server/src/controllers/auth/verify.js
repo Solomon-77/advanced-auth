@@ -18,7 +18,7 @@ const verify = async (req, res) => {
       await Token.findByIdAndDelete(tokenDoc._id);
 
       res.status(200).json({ message: 'Email verified successfully. You can now login.' });
-      // For redirect:
+
       // res.redirect(`${process.env.FRONTEND_URL}/login`);
    } catch (error) {
       res.status(500).json({ error: 'An error occurred during verification.' });

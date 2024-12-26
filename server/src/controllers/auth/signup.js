@@ -23,8 +23,8 @@ const signup = async (req, res) => {
          password: hashedPassword,
          token: verificationToken
       });
+      
       await tokenDoc.save();
-
       await sendVerificationEmail(email, verificationToken);
 
       res.status(201).json({ message: 'Please verify your email within 1 hour to complete registration.' });
