@@ -17,14 +17,13 @@ const signup = async (req, res) => {
       const hashedPassword = await argon2.hash(password);
       const verificationToken = crypto.randomBytes(32).toString('hex');
 
-      const tokenDoc = new Token({
+      await Token.create({
          username,
          email,
          password: hashedPassword,
          token: verificationToken
-      });
-      
-      await tokenDoc.save();
+      });   
+
       await sendVerificationEmail(email, verificationToken);
 
       res.status(201).json({ message: 'Please verify your email within 1 hour to complete registration.' });
