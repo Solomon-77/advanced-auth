@@ -11,7 +11,7 @@ const signup = async (req, res) => {
       const existingUser = await User.exists({ email });
       if (existingUser) return res.status(400).json({ error: "Email already taken" });
 
-      const pendingToken = await Token.findOne({ email });
+      const pendingToken = await Token.exists({ email });
       if (pendingToken) return res.status(400).json({ error: "Verification email already sent. Please check your inbox." });
 
       const hashedPassword = await argon2.hash(password);
@@ -22,7 +22,7 @@ const signup = async (req, res) => {
          email,
          password: hashedPassword,
          token: verificationToken
-      });   
+      });
 
       await sendVerificationEmail(email, verificationToken);
 
