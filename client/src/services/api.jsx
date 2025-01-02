@@ -1,24 +1,34 @@
+// src/services/api.js
 import axios from "axios";
 
-const API_BASE_URL = import.meta.env.API_URL; // Replace with your base URL
-
-const apiClient = axios.create({
-   baseURL: API_BASE_URL,
-   headers: {
-      "Content-Type": "application/json",
-   },
-});
+const API_BASE_URL = import.meta.env.API_BASE_URL; // Replace with your backend URL
 
 // Signup API
-export const signupUser = async (userData) => {
-   return apiClient.post("/signup", userData);
+export const signup = async (userData) => {
+   try {
+      const response = await axios.post(`${API_BASE_URL}/auth/signup`, userData);
+      return response.data;
+   } catch (error) {
+      throw error.response ? error.response.data : new Error("Network Error");
+   }
 };
 
-// Add other APIs like login, verify, etc.
-export const loginUser = async (credentials) => {
-   return apiClient.post("/login", credentials);
+// Login API
+export const login = async (credentials) => {
+   try {
+      const response = await axios.post(`${API_BASE_URL}/auth/login`, credentials);
+      return response.data;
+   } catch (error) {
+      throw error.response ? error.response.data : new Error("Network Error");
+   }
 };
 
+// Verify Email API
 export const verifyEmail = async (token) => {
-   return apiClient.get(`/verify/${token}`);
+   try {
+      const response = await axios.get(`${API_BASE_URL}/auth/verify/${token}`);
+      return response.data;
+   } catch (error) {
+      throw error.response ? error.response.data : new Error("Network Error");
+   }
 };
