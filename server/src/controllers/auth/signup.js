@@ -4,9 +4,32 @@ const Token = require('../../models/Token');
 const User = require('../../models/User');
 const { sendVerificationEmail } = require('../../utils/email');
 
+const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+const validatePassword = (password) => {
+   const minLength = 8;
+   const hasUpperCase = /[A-Z]/.test(password);
+   const hasLowerCase = /[a-z]/.test(password);
+   const hasDigit = /\d/.test(password);
+   const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+   if (password.length < minLength) return `Password must be at least ${minLength} characters long.`;
+   if (!hasUpperCase) return "Password must contain at least one uppercase letter.";
+   if (!hasLowerCase) return "Password must contain at least one lowercase letter.";
+   if (!hasDigit) return "Password must contain at least one digit.";
+   if (!hasSpecialChar) return "Password must contain at least one special character.";
+
+   return null;
+};
+
 const signup = async (req, res) => {
    try {
       const { username, email, password } = req.body;
+
+      if (!validateEmail(email)) return res.status(400).json({ error: "Invalid email format" });
+
+      const passwordError = validatePassword(password);
+      if (passwordError) return res.status(400).json({ error: passwordError });
 
       const existingUser = await User.exists({ email });
       if (existingUser) return res.status(400).json({ error: "Email already taken" });
