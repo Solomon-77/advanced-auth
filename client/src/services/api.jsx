@@ -1,8 +1,7 @@
 import axios from "axios";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL; // Replace with your backend URL
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
-// Signup API
 export const signup = async (userData) => {
    try {
       const response = await axios.post(`${API_BASE_URL}/auth/signup`, userData);
@@ -12,20 +11,18 @@ export const signup = async (userData) => {
    }
 };
 
-// Login API
-export const login = async (credentials) => {
+export const verifyEmail = async (token) => {
    try {
-      const response = await axios.post(`${API_BASE_URL}/auth/login`, credentials);
+      const response = await axios.get(`${API_BASE_URL}/auth/verify/${token}`);
       return response.data;
    } catch (error) {
       throw error.response ? error.response.data : new Error("Network Error");
    }
 };
 
-// Verify Email API
-export const verifyEmail = async (token) => {
+export const login = async (credentials) => {
    try {
-      const response = await axios.get(`${API_BASE_URL}/auth/verify/${token}`);
+      const response = await axios.post(`${API_BASE_URL}/auth/login`, credentials);
       return response.data;
    } catch (error) {
       throw error.response ? error.response.data : new Error("Network Error");

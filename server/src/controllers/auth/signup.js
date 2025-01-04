@@ -7,13 +7,12 @@ const { sendVerificationEmail } = require('../../utils/email');
 const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
 const validatePassword = (password) => {
-   const minLength = 8;
    const hasUpperCase = /[A-Z]/.test(password);
    const hasLowerCase = /[a-z]/.test(password);
-   const hasDigit = /\d/.test(password);
-   const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+   const hasDigit = /[0-9]/.test(password);
+   const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
 
-   if (password.length < minLength) return `Password must be at least ${minLength} characters long.`;
+   if (password.length < 8) return "Password must be at least 8 characters long.";
    if (!hasUpperCase) return "Password must contain at least one uppercase letter.";
    if (!hasLowerCase) return "Password must contain at least one lowercase letter.";
    if (!hasDigit) return "Password must contain at least one digit.";
