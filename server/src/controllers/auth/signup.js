@@ -34,7 +34,7 @@ const signup = async (req, res) => {
       if (existingUser) return res.status(400).json({ error: "Email already taken" });
 
       const pendingToken = await Token.exists({ email });
-      if (pendingToken) return res.status(400).json({ error: "Verification email already sent. Please check your inbox." });
+      if (pendingToken) return res.status(400).json({ error: "Verification is already sent in your email. Please check your inbox." });
 
       const hashedPassword = await argon2.hash(password);
       const verificationToken = crypto.randomBytes(32).toString('hex');
