@@ -17,7 +17,26 @@ const SignupPage = () => {
    const handleChange = (e) => {
       const { name, value } = e.target;
       setFormData({ ...formData, [name]: value });
-      setErrors({ ...errors, [name]: '' });
+
+      // Realtime username validation (only if the field is not blank)
+      if (name === 'username' && value.trim() !== '') {
+         const usernameError = validateUsername(value);
+         setErrors((prevErrors) => ({ ...prevErrors, username: usernameError }));
+      } else {
+         setErrors((prevErrors) => ({ ...prevErrors, [name]: '' }));
+      }
+   };
+
+   const validateUsername = (username) => {
+      const minLength = 3;
+      const maxLength = 20;
+      const allowedChars = /^[a-zA-Z0-9_-]+$/; // Alphanumeric, underscores, and hyphens
+
+      if (username.length < minLength) return "Username must be at least 3 characters long.";
+      if (username.length > maxLength) return "Username must be no more than 20 characters long.";
+      if (!allowedChars.test(username)) return "Username can only contain letters, numbers, underscores, and hyphens.";
+
+      return null;
    };
 
    const isPasswordValid = (password) => ({
@@ -31,14 +50,22 @@ const SignupPage = () => {
    const validateForm = () => {
       const newErrors = {};
 
-      if (!formData.username) newErrors.username = "Username is required.";
+      // Username validation (only check for "required" on submit)
+      if (!formData.username.trim()) {
+         newErrors.username = "Username is required.";
+      } else {
+         const usernameError = validateUsername(formData.username);
+         if (usernameError) newErrors.username = usernameError;
+      }
 
+      // Email validation
       if (!formData.email) {
          newErrors.email = "Email is required.";
-      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email)) {
          newErrors.email = "Invalid email format.";
       }
 
+      // Password validation
       if (!formData.password) {
          newErrors.password = "Password is required.";
       } else {
@@ -48,6 +75,7 @@ const SignupPage = () => {
          }
       }
 
+      // Confirm password validation
       if (Object.values(isPasswordValid(formData.password)).every((rule) => rule)
          && formData.password !== formData.confirmPassword) {
          newErrors.confirmPassword = "Passwords do not match.";
@@ -74,11 +102,16 @@ const SignupPage = () => {
          setFormData({ username: '', email: '', password: '', confirmPassword: '' });
          setErrors({});
       } catch (error) {
-         setMessage({ text: error.error || "An error occurred during signup.", type: "error" });
+         if (error.error === "Email already taken") {
+            setErrors((prevErrors) => ({ ...prevErrors, email: "Email is already taken." }));
+         } else {
+            setMessage({ text: error.error || "An error occurred during signup.", type: "error" });
+         }
       }
    };
 
    const passwordValidation = isPasswordValid(formData.password);
+
    const validationRules = [
       { key: 'minLength', label: 'At least 8 characters' },
       { key: 'hasUpperCase', label: 'At least one uppercase letter' },
@@ -152,9 +185,10 @@ const SignupPage = () => {
                value={formData.confirmPassword}
                onChange={handleChange}
             />
-            {errors.confirmPassword && Object.values(isPasswordValid(formData.password)).every((rule) => rule) && (
-               <p className="text-sm text-red-500 -mt-3">{errors.confirmPassword}</p>
-            )}
+            {errors.confirmPassword && Object.values(isPasswordValid(formData.password))
+               .every((rule) => rule) && (
+                  <p className="text-sm text-red-500 -mt-3">{errors.confirmPassword}</p>
+               )}
             <button className="bg-neutral-700 py-3 text-white font-medium rounded-md">Sign Up</button>
             <div className="flex justify-center text-sm">
                <Link to="/login" className="hover:underline">Already have an account? Login</Link>

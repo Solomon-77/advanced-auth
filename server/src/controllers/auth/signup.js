@@ -4,7 +4,19 @@ const Token = require('../../models/Token');
 const User = require('../../models/User');
 const { sendVerificationEmail } = require('../../utils/email');
 
-const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+const validateEmail = (email) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
+
+const validateUsername = (username) => {
+   const minLength = 3;
+   const maxLength = 20;
+   const allowedChars = /^[a-zA-Z0-9_-]+$/; // Alphanumeric, underscores, and hyphens
+
+   if (username.length < minLength) return "Username must be at least 3 characters long.";
+   if (username.length > maxLength) return "Username must be no more than 20 characters long.";
+   if (!allowedChars.test(username)) return "Username can only contain letters, numbers, underscores, and hyphens.";
+
+   return null;
+};
 
 const validatePassword = (password) => {
    const hasUpperCase = /[A-Z]/.test(password);
@@ -26,6 +38,9 @@ const signup = async (req, res) => {
       const { username, email, password } = req.body;
 
       if (!validateEmail(email)) return res.status(400).json({ error: "Invalid email format" });
+
+      const usernameError = validateUsername(username);
+      if (usernameError) return res.status(400).json({ error: usernameError });
 
       const passwordError = validatePassword(password);
       if (passwordError) return res.status(400).json({ error: passwordError });
