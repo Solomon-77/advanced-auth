@@ -20,6 +20,15 @@ export const verifyEmail = async (token) => {
    }
 };
 
+export const validateToken = async (token) => {
+   try {
+      const response = await axios.get(`${API_BASE_URL}/auth/validate-token/${token}`);
+      return response.data;
+   } catch (error) {
+      throw error.response ? error.response.data : new Error("Network Error");
+   }
+};
+
 export const login = async (credentials) => {
    try {
       const response = await axios.post(`${API_BASE_URL}/auth/login`, credentials);

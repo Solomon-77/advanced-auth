@@ -23,4 +23,17 @@ const verify = async (req, res) => {
    }
 };
 
-module.exports = { verify };
+const validateToken = async (req, res) => {
+   const { token } = req.params;
+
+   try {
+      const tokenDoc = await Token.findOne({ token });
+      if (!tokenDoc) return res.status(404).json({ message: 'Invalid or expired verification token.' });
+
+      res.status(200).json({ message: 'Token is valid.', token });
+   } catch (error) {
+      res.status(500).json({ error: 'An error occurred during token validation.' });
+   }
+}
+
+module.exports = { verify, validateToken };

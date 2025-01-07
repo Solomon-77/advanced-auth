@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { signup } from "../../services/api";
 import { useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa";
@@ -13,21 +13,16 @@ const SignupPage = () => {
 
    const [message, setMessage] = useState({ text: '', type: '' });
    const [errors, setErrors] = useState({});
-   const navigate = useNavigate(); // Initialize useNavigate
 
-   // Effect to handle message fading and navigation
    useEffect(() => {
       if (message.text) {
          const timer = setTimeout(() => {
             setMessage({ text: '', type: '' }); // Clear the message
-            if (message.type === "success") {
-               navigate("/login"); // Navigate to /login for success messages
-            }
          }, 5000); // 5 seconds
 
          return () => clearTimeout(timer); // Cleanup the timer
       }
-   }, [message, navigate]);
+   }, [message]);
 
    const handleChange = (e) => {
       const { name, value } = e.target;

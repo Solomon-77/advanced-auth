@@ -9,6 +9,7 @@ import Marketplace from "./components/MainOutlet/MainfeedOutlet/Marketplace"
 import Watch from "./components/MainOutlet/MainfeedOutlet/Watch"
 import Posts from "./components/MainOutlet/MainfeedOutlet/Posts"
 import VerifyEmail from "./routes/Auth/VerifyEmail"
+import ValidateToken from "./routes/Auth/ValidateToken"
 
 const App = () => {
    return (
@@ -27,6 +28,7 @@ const App = () => {
                <Route path="/signup" element={<SignupPage />} />
                <Route path="/forgot-password" element={<ForgotpasswordPage />} />
                <Route path="/auth/verify/:token" element={<VerifyEmail />} />
+               <Route path="/auth/validate-token/:token" element={<ValidateToken />} />
             </Routes>
          </BrowserRouter>
       </div>
