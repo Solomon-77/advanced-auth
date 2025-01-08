@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { verifyEmail } from "../../services/api";
 
 const VerifyEmail = () => {
@@ -21,7 +21,10 @@ const VerifyEmail = () => {
       <div className="h-screen grid place-items-center">
          <div className="text-center">
             <h1 className="text-2xl font-bold text-green-600">Email Verified Successfully!</h1>
-            <p className="mt-4 text-neutral-600">You will be redirected to the login page in a few seconds.</p>
+            <div className="mt-4 flex justify-center">
+               <p className="text-neutral-600 mr-1">You may now proceed to</p>
+               <Link className="underline" to="/login">login</Link>
+            </div>
          </div>
       </div>
    );
