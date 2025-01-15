@@ -11,18 +11,18 @@ const SignupPage = () => {
       confirmPassword: ''
    });
 
-   const [message, setMessage] = useState({ text: '', type: '' });
+   const [formMessage, setFormMessage] = useState({ text: '', type: '' });
    const [errors, setErrors] = useState({});
 
    useEffect(() => {
-      if (message.text) {
+      if (formMessage.text) {
          const timer = setTimeout(() => {
-            setMessage({ text: '', type: '' }); // Clear the message
+            setFormMessage({ text: '', type: '' }); // Clear the message
          }, 5000); // 5 seconds
 
          return () => clearTimeout(timer); // Cleanup the timer
       }
-   }, [message]);
+   }, [formMessage]);
 
    const handleChange = (e) => {
       const { name, value } = e.target;
@@ -108,14 +108,14 @@ const SignupPage = () => {
          };
          const response = await signup(userData);
 
-         setMessage({ text: response.message, type: "success" });
+         setFormMessage({ text: response.message, type: "success" });
          setFormData({ username: '', email: '', password: '', confirmPassword: '' });
          setErrors({});
       } catch (error) {
          if (error.error === "Email already taken") {
             setErrors((prevErrors) => ({ ...prevErrors, email: "Email is already taken." }));
          } else {
-            setMessage({ text: error.error || "An error occurred during signup.", type: "error" });
+            setFormMessage({ text: error.error || "An error occurred during signup.", type: "error" });
          }
       }
    };
@@ -134,12 +134,12 @@ const SignupPage = () => {
       <div className="h-screen grid place-items-center">
          <form onSubmit={handleSubmit} className="flex flex-col max-w-[350px] min-w-0 w-full p-6 gap-4">
             <h1 className="text-xl text-center font-medium">Sign up for your account</h1>
-            {message.text && (
-               <p className={`p-3 rounded-md text-center ${message.type === "error"
+            {formMessage.text && (
+               <p className={`p-3 rounded-md text-center ${formMessage.type === "error"
                   ? "bg-red-100 text-red-700"
                   : "bg-green-100 text-green-700"}`}
                >
-                  {message.text}
+                  {formMessage.text}
                </p>
             )}
             <input
